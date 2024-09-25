@@ -22,6 +22,24 @@ class Community extends StatelessWidget {
             dateJoined: '${DateTime.now().add(Duration(days: 60))}',
             role: 'Investor'
         ),
+        hasImage: true,
+        threadId: '3323',
+        datetime: '${DateTime.now()}'
+    ),
+    MessageModel(
+        uid: '2',
+        body: 'Hello fellow Investors!',
+        sender: UserModel(
+            uid: '2334',
+            firstname: 'Mulenga',
+            lastname: 'Chakanga',
+            email: '',
+            phone: '',
+            picture: '',
+            dateJoined: '${DateTime.now().add(Duration(days: 60))}',
+            role: 'Dealer'
+        ),
+        hasImage: false,
         threadId: '3323',
         datetime: '${DateTime.now()}'
     ),
@@ -48,34 +66,44 @@ class Community extends StatelessWidget {
                       }),
                 )
             ),
+            Divider(),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 20,vertical: 18),
+              color: Colors.white,
+              padding: EdgeInsets.symmetric(horizontal: 10,vertical: 4),
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10,vertical: 6),
+                padding: EdgeInsets.symmetric(horizontal: 0,vertical: 0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all()
+
                 ),
                 width: double.infinity,
                 child: Row(
                   children: [
-                    Icon(Icons.emoji_emotions, color: Kara.greyish,),
+                    Icon(Icons.emoji_emotions, color: Kara.secondary2,),
                     SizedBox(width: 6,),
-                    Expanded(child: Text('Type message...')),
+                    Expanded(
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(horizontal: 5),
+                            border: InputBorder.none,
+                            hintText: 'Type message...'
+                          ),
+                        )
+                    ),
                     Container(
                       child: Row(
                         children: [
-                          Icon(Icons.image_sharp, color: Kara.greyish,),
-                          SizedBox(width: 5,),
-                          Icon(Icons.add, color: Kara.greyish,),
-
+                          Icon(Icons.image_sharp, color: Kara.secondary2,),
+                          SizedBox(width: 10,),
+                          Icon(Icons.send, color: Kara.primary,),
                         ],
                       ),
                     )
                   ],
                 ),
               ),
-            )
+            ),
+
           ],
         ),
       ),
