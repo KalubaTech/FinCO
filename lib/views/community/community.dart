@@ -1,52 +1,28 @@
 import 'package:finco/components/community/message_bubble.dart';
+import 'package:finco/controllers/comments_controller.dart';
+import 'package:finco/controllers/messages_controller.dart';
+import 'package:finco/controllers/user_controller.dart';
+import 'package:finco/helpers/methods.dart';
+import 'package:finco/models/comment_model.dart';
 import 'package:finco/models/user_model.dart';
 import 'package:finco/utils/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../models/message_model.dart';
 
 class Community extends StatelessWidget {
   Community({super.key});
 
-  List<MessageModel>_messages=[
-    MessageModel(
-        uid: '1',
-        body: 'Hello fellow dealers!',
-        sender: UserModel(
-            uid: '23434',
-            firstname: 'Kaluba',
-            lastname: 'Chakanga',
-            email: '',
-            phone: '',
-            picture: '',
-            dateJoined: '${DateTime.now().add(Duration(days: 60))}',
-            role: 'Investor'
-        ),
-        hasImage: true,
-        threadId: '3323',
-        datetime: '${DateTime.now()}'
-    ),
-    MessageModel(
-        uid: '2',
-        body: 'Hello fellow Investors!',
-        sender: UserModel(
-            uid: '2334',
-            firstname: 'Mulenga',
-            lastname: 'Chakanga',
-            email: '',
-            phone: '',
-            picture: '',
-            dateJoined: '${DateTime.now().add(Duration(days: 60))}',
-            role: 'Dealer'
-        ),
-        hasImage: false,
-        threadId: '3323',
-        datetime: '${DateTime.now()}'
-    ),
-  ];
+  TextEditingController _messageController = TextEditingController();
+
+  UserController _userController = Get.find();
+
+  Methods _methods = Methods();
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Kara.primary,
@@ -57,13 +33,18 @@ class Community extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-                child: Container(
-                  child: ListView.builder(
-                      itemCount: _messages.length,
-                      itemBuilder: (c,i){
-                        MessageModel message = _messages[i];
-                        return MessageBubble(message: message);
-                      }),
+                child: GetBuilder<MessagesController>(
+                  builder: (messagesController) {
+
+                    return Container(
+                      child: ListView.builder(
+                          itemCount: messagesController.messages.value.length,
+                          itemBuilder: (c,i){
+                            MessageModel message = messagesController.messages.value[i];
+                            return MessageBubble(message: message);
+                          }),
+                    );
+                  }
                 )
             ),
             Divider(),
@@ -83,6 +64,7 @@ class Community extends StatelessWidget {
                     SizedBox(width: 6,),
                     Expanded(
                         child: TextFormField(
+                          controller: _messageController,
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.symmetric(horizontal: 5),
                             border: InputBorder.none,
@@ -95,7 +77,23 @@ class Community extends StatelessWidget {
                         children: [
                           Icon(Icons.image_sharp, color: Kara.secondary2,),
                           SizedBox(width: 10,),
-                          Icon(Icons.send, color: Kara.primary,),
+                          InkWell(
+                             onTap: (){
+                               if(_messageController.text.isNotEmpty){
+                                 MessageModel _message = MessageModel(
+                                     uid: '3',
+                                     body: _messageController.text,
+                                     hasImage: false,
+                                     sender: _userController.user.value,
+                                     threadId: '12222',
+                                     datetime: '${DateTime.now}');
+                                 _methods.addPost(_message);
+                                 _messageController.clear();
+                               }
+
+                             },
+                              child: Icon(Icons.send, color: Kara.primary,)
+                          ),
                         ],
                       ),
                     )

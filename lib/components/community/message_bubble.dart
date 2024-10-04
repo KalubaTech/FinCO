@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:finco/components/community/comments.dart';
+import 'package:finco/controllers/comments_controller.dart';
 import 'package:finco/controllers/user_controller.dart';
 import 'package:finco/models/user_model.dart';
 import 'package:finco/utils/colors.dart';
@@ -60,7 +62,7 @@ class MessageBubble extends StatelessWidget {
                     ),
                   ),
                   Spacer(),
-                  Icon(Icons.more_vert_rounded)
+                  Icon(Icons.more_horiz_rounded)
                 ],
               ),
             ),
@@ -94,12 +96,30 @@ class MessageBubble extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Icon(Icons.thumb_up_alt_sharp, size: 16,),
-                  SizedBox(width: 20,),
-                  Icon(Icons.thumb_down, size: 16,),
+                  Row(
+                    children: [
+                      Icon(Icons.thumb_up_alt_sharp, size: 16,),
+                      SizedBox(width: 8,),
+                      Text('23k', style: TextStyle(fontSize: 12),)
+                    ],
+                  ),
                   Spacer(),
-                  Text('294  ', style: TextStyle(fontSize: 12),),
-                  Icon(Icons.comment, size: 16,),
+                  GetBuilder<CommentsController>(
+                    builder: (commentsController) {
+                      int countComments = commentsController.filterCommentsByMessage(message.uid).length;
+                      return InkWell(
+                        onTap: (){
+                          Get.to(()=>Comments(message: message), transition: Transition.downToUp, duration: Duration(milliseconds: 300));
+                        },
+                        child: Row(
+                          children: [
+                            Text('${countComments}  ', style: TextStyle(fontSize: 12),),
+                            Icon(Icons.comment, size: 16,),
+                          ],
+                        ),
+                      );
+                    }
+                  ),
                 ],
               ),
             )

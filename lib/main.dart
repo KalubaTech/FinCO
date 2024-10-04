@@ -1,3 +1,4 @@
+import 'package:finco/controllers/messages_controller.dart';
 import 'package:finco/controllers/user_controller.dart';
 import 'package:finco/utils/colors.dart';
 import 'package:finco/views/anchor.dart';
@@ -5,8 +6,12 @@ import 'package:finco/views/intros/introduction.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'controllers/comments_controller.dart';
+
 void main() {
   Get.put(UserController());
+  Get.put(CommentsController());
+  Get.put(MessagesController());
   runApp(const MyApp());
 }
 
